@@ -197,10 +197,6 @@ Users can:
 
 ![Model Comparison 3](Screenshots/model-comparison%20(3).png)
 
-### Model Comparison 4
-
-![Model Comparison 4](Screenshots/model-comparison%20(4).png)
-
 ### Confusion Matrix - Deep Learning
 
 ![Confusion Matrix Deep Learning](Screenshots/confusion-matrix-dee-learning.png)
