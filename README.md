@@ -1,55 +1,87 @@
-# ❤️ Heart Disease Prediction — نظام التنبؤ بأمراض القلب
+# ❤️ Heart Disease Prediction
 
-## 📌 فكرة المشروع
+> A Machine Learning project for predicting the presence of heart disease from clinical patient data.
 
-مشروع تصنيف ثنائي (Binary Classification) بيتنبأ باحتمالية إصابة مريض بمرض القلب (`HeartDisease`) بناءً على بيانات إكلينيكية.
+## 📌 Overview
 
-الداتا المستخدمة هي `heart.csv` بحجم **918 صف و12 عمود**، منها **11 feature** وعمود الهدف `HeartDisease`.
+This project is a **Binary Classification** system that predicts whether a patient has heart disease (`HeartDisease`) based on clinical features.
 
-المشروع بيقارن بين 4 موديلات مختلفة:
+The project compares four different Machine Learning and Deep Learning models and then combines them into a **Hybrid Ensemble** using **Weighted Soft Voting**.
+
+The project also includes an interactive **Gradio** interface where users can enter patient information, select a model, and get a prediction.
+
+---
+
+## 📊 Dataset
+
+The project uses the `heart.csv` dataset.
+
+- **Records:** 918
+- **Columns:** 12
+- **Input Features:** 11
+- **Target:** `HeartDisease`
+- **Task:** Binary Classification
+
+### Target
+
+- `0` → No Heart Disease
+- `1` → Heart Disease
+
+---
+
+## 🧬 Features
+
+| Feature | Description |
+|---|---|
+| `Age` | Patient age |
+| `Sex` | Sex (M / F) |
+| `ChestPainType` | Chest pain type (ATA, NAP, ASY, TA) |
+| `RestingBP` | Resting blood pressure |
+| `Cholesterol` | Cholesterol level |
+| `FastingBS` | Fasting blood sugar (0/1, above 120 or not) |
+| `RestingECG` | Resting electrocardiogram result (Normal, ST, LVH) |
+| `MaxHR` | Maximum heart rate achieved |
+| `ExerciseAngina` | Exercise-induced angina (Y/N) |
+| `Oldpeak` | ST depression |
+| `ST_Slope` | Slope of the ST segment (Up, Flat, Down) |
+
+---
+
+## ⚙️ Preprocessing
+
+The project uses different preprocessing pipelines depending on the model type.
+
+### Scale-sensitive models
+
+Used for:
 
 - Logistic Regression
-- Random Forest
-- XGBoost
 - Deep Learning (MLP)
 
-وبعدين بيجمعهم في **Hybrid Ensemble** باستخدام **Weighted Soft Voting** بأوزان محددة، بهدف تحسين الأداء والوصول لأفضل نتيجة.
+Processing:
 
-وفي النهاية، المشروع بيحتوي على واجهة تفاعلية باستخدام **Gradio** تسمح للمستخدم بإدخال بيانات مريض جديد واختيار الموديل المستخدم للتنبؤ.
+- `StandardScaler` for numerical features
+- `OneHotEncoder` for categorical features
 
----
+### Tree-based models
 
-## 🧬 الـ Features
+Used for:
 
-الداتا فيها 11 feature، والـ target هو `HeartDisease`.
+- Random Forest
+- XGBoost
 
-| Feature | الوصف |
-|---|---|
-| `Age` | عمر المريض |
-| `Sex` | النوع (M / F) |
-| `ChestPainType` | نوع ألم الصدر (ATA, NAP, ASY, TA) |
-| `RestingBP` | ضغط الدم وقت الراحة |
-| `Cholesterol` | نسبة الكوليسترول |
-| `FastingBS` | سكر الصيام (0/1، أعلى من 120 أو لأ) |
-| `RestingECG` | نتيجة رسم القلب وقت الراحة (Normal, ST, LVH) |
-| `MaxHR` | أقصى معدل ضربات قلب تم الوصول له |
-| `ExerciseAngina` | ذبحة صدرية مرتبطة بالمجهود (Y/N) |
-| `Oldpeak` | مقدار انخفاض ST |
-| `ST_Slope` | ميل قطعة ST (Up, Flat, Down) |
+Processing:
 
-الأعمدة الرقمية بتتعالج باستخدام `StandardScaler`، والأعمدة الفئوية باستخدام `OneHotEncoder`.
-
-وفيه Pipeline منفصل للـ preprocessing حسب نوع الموديل:
-- موديلات حساسة للـ scale: Logistic Regression و Deep Learning (MLP)
-- موديلات شجرية: Random Forest و XGBoost
+- `OneHotEncoder` for categorical features
+- Numerical features passed without scaling
 
 ---
 
-## 🤖 الـ Models المستخدمة
+## 🤖 Models
 
 ### 1. Logistic Regression
 
-تم تجربة 5 solvers مختلفة:
+Five different solvers were evaluated using Cross-Validation:
 
 - `liblinear`
 - `lbfgs`
@@ -57,25 +89,32 @@
 - `newton-cg`
 - `saga`
 
-وتم اختيار الأفضل بناءً على Cross-Validation باستخدام **F1 Score**، وكانت النتيجة الأفضل مع:
+The best solver based on F1 Score was:
 
 `liblinear`
 
 ### 2. Random Forest
 
-تم استخدام `RandomizedSearchCV` لعمل Hyperparameter Tuning باستخدام **100 iteration** على شبكة واسعة من الـ hyperparameters.
+`RandomizedSearchCV` was used for hyperparameter tuning with **100 iterations** over a wide hyperparameter search space.
 
 ### 3. XGBoost
 
-تم استخدام `RandomizedSearchCV` لعمل Hyperparameter Tuning على مجموعة من الـ hyperparameters الخاصة بـ XGBoost.
+`RandomizedSearchCV` was also used for XGBoost hyperparameter tuning.
 
-### 4. Deep Learning (MLP)
+### 4. Deep Learning — MLP
 
-تم عمل Architecture Search على **7 معماريات مختلفة**، مع تجربة عدد الطبقات والـ neurons والـ Dropout والـ Learning Rate، وتم اختيار أفضل Architecture بناءً على Validation Accuracy.
+An automatic architecture search was performed across **7 different architectures**, varying:
+
+- Number of layers
+- Number of neurons
+- Dropout
+- Learning Rate
+
+The best architecture was selected based on Validation Accuracy.
 
 ### 5. Hybrid Ensemble
 
-تم دمج النماذج الأربعة باستخدام **Weighted Soft Voting** بالأوزان التالية:
+The four models were combined using **Weighted Soft Voting**.
 
 | Model | Weight |
 |---|---:|
@@ -86,9 +125,9 @@
 
 ---
 
-## 📊 Model Performance
+## 📈 Model Performance
 
-النتائج على الـ Test Set، باستخدام **20% من الداتا** مع **Stratified Split**:
+Results on the **Test Set (20% of the dataset, Stratified Split)**:
 
 | Model | Accuracy | Precision | Recall | F1 | ROC-AUC |
 |---|---:|---:|---:|---:|---:|
@@ -100,53 +139,51 @@
 
 ### 🏆 Best Model
 
-الـ **Hybrid Ensemble** حقق أفضل نتيجة في المشروع:
+The **Hybrid Ensemble** achieved the best overall performance:
 
-- **Accuracy:** 91.30%
-- **Precision:** 91.35%
-- **Recall:** 93.14%
-- **F1 Score:** 92.23%
-- **ROC-AUC:** 93.81%
+- 🎯 Accuracy: **91.30%**
+- 🎯 Precision: **91.35%**
+- 🎯 Recall: **93.14%**
+- 🎯 F1 Score: **92.23%**
+- 🎯 ROC-AUC: **93.81%**
 
 ---
 
 ## 🔍 Feature Importance
 
-تم تحليل أهمية الـ features في الموديلات الشجرية، خصوصًا Random Forest و XGBoost.
+Feature importance was analyzed for the tree-based models, particularly Random Forest and XGBoost.
 
-من أبرز الـ features المؤثرة:
+The most influential features included:
 
 - `ST_Slope`
 - `ChestPainType`
 - `Cholesterol`
 - `ExerciseAngina`
 
-وسيتم عرض الرسومات الخاصة بالـ Feature Importance في قسم الصور بالأسفل.
-
 ---
 
 ## 🖥️ Gradio Interface
 
-المشروع يحتوي على Interactive Interface باستخدام Gradio.
+The project includes an interactive Gradio application.
 
-المستخدم يقدر:
+Users can:
 
-1. يدخل بيانات المريض.
-2. يختار الـ Model.
-3. يضغط على `Predict`.
-4. يحصل على نتيجة التنبؤ والـ probability.
+1. Enter the patient's 11 features.
+2. Select a Machine Learning model.
+3. Click `Predict`.
+4. View the prediction and probability.
 
-### واجهة التطبيق
+### 🎛️ Interface
 
 ![Gradio Interface](screenshots/gradio-interface.png)
 
-### مثال على Prediction
+### 🔮 Prediction Example
 
 ![Prediction Result](screenshots/prediction.png)
 
 ---
 
-## 📈 Model Evaluation
+## 📊 Visual Results
 
 ### Model Comparison
 
@@ -164,19 +201,19 @@
 
 ![Feature Importance](screenshots/feature-importance.png)
 
-> لو أسماء الصور عندك مختلفة، غيّر أسماء الملفات داخل روابط الصور فقط مع الحفاظ على نفس فولدر `screenshots`.
+> 💡 If your screenshot filenames are different, update the image paths above to match your `screenshots/` folder.
 
 ---
 
-## 🎯 شكل الـ Prediction
+## 🎯 Prediction Output
 
-المستخدم بيدخل الـ 11 feature عن طريق:
+The user enters the 11 patient features using:
 
-- Sliders
-- Dropdowns
-- Radio Buttons
+- 🎚️ Sliders
+- 🔽 Dropdowns
+- 🔘 Radio Buttons
 
-وبعدين يختار الـ Model:
+The user can choose:
 
 - Logistic Regression
 - Random Forest
@@ -184,14 +221,14 @@
 - Deep Learning (MLP)
 - Hybrid Ensemble
 
-النظام بيرجع:
+The application returns:
 
-- **Prediction:** `Heart Disease Detected` أو `No Heart Disease`
-- **Probability of Heart Disease:** النسبة المئوية للاحتمال
-- **Model used:** اسم الموديل المستخدم
-- **Model test-set accuracy:** دقة الموديل على الـ Test Set، أو ملاحظة توضح استخدام الـ Ensemble
+- **Prediction:** `Heart Disease Detected` or `No Heart Disease`
+- **Probability of Heart Disease:** Probability percentage
+- **Model Used:** Selected model
+- **Test Set Accuracy:** Accuracy of the selected model
 
-### Example Output
+### Example
 
 ```text
 Prediction: Heart Disease Detected
@@ -202,50 +239,36 @@ Weighted soft-voting ensemble of all 4 models.
 
 ---
 
-## ⚙️ طريقة التشغيل
+## 🚀 How to Run
 
-### تشغيل الـ Notebook
+### 📓 Run the Notebook
 
-للتدريب والتحليل الكامل:
+1. Open `heart_disease_project.ipynb` in Google Colab or Jupyter.
+2. Make sure `heart.csv` is available in the same path.
+3. For Google Colab, the expected path is `/content/heart.csv`.
+4. Run the notebook cells from top to bottom.
 
-1. افتح `heart_disease_project.ipynb` على Google Colab أو Jupyter.
-2. تأكد إن ملف `heart.csv` موجود في نفس المسار.
-3. في حالة Google Colab يكون المسار:
-   `/content/heart.csv`
-4. شغّل الخلايا بالترتيب من فوق لتحت.
-
-### تشغيل واجهة Gradio
+### 🌐 Run the Gradio Application
 
 ```bash
 python heart_disease_app.py
 ```
 
-لازم `heart.csv` يكون موجود في نفس الفولدر.
+Make sure `heart.csv` is in the same folder.
 
-أول مرة يتم فيها تشغيل التطبيق، الموديلات يتم تدريبها تلقائيًا وتتخزن في:
+On the first run, the models are trained automatically and stored in:
 
 ```text
 model_cache/
 ```
 
-وبالتالي التشغيلات التالية تقدر تحمل الموديلات المحفوظة بدل إعادة التدريب من البداية.
+Future runs can load the cached models instead of retraining them.
 
 ---
 
-## 📦 المكتبات المطلوبة
+## 📦 Installation
 
-```text
-numpy
-pandas
-matplotlib
-scikit-learn
-xgboost
-tensorflow
-gradio
-joblib
-```
-
-يمكن تثبيتها باستخدام:
+Install the required libraries:
 
 ```bash
 pip install numpy pandas matplotlib scikit-learn xgboost tensorflow gradio joblib
@@ -255,20 +278,22 @@ pip install numpy pandas matplotlib scikit-learn xgboost tensorflow gradio jobli
 
 ## 🛠️ Technologies
 
-- **Python**
-- **Pandas / NumPy** — معالجة البيانات
-- **scikit-learn** — Pipelines, Preprocessing, Logistic Regression, Random Forest, Cross-Validation, RandomizedSearchCV
-- **XGBoost** — `XGBClassifier`
-- **TensorFlow / Keras** — بناء وتدريب الـ MLP
-- **Gradio** — الواجهة التفاعلية
-- **Joblib** — حفظ وتحميل الموديلات المدربة
-- **Matplotlib** — Learning Curves, Confusion Matrix, ROC Curve و Feature Importance
+- 🐍 **Python**
+- 🐼 **Pandas / NumPy** — Data processing
+- 🤖 **scikit-learn** — Pipelines, preprocessing, Logistic Regression, Random Forest, Cross-Validation, RandomizedSearchCV
+- 🚀 **XGBoost** — `XGBClassifier`
+- 🧠 **TensorFlow / Keras** — MLP model
+- 🎨 **Gradio** — Interactive user interface
+- 💾 **Joblib** — Model saving and loading
+- 📈 **Matplotlib** — Learning Curves, Confusion Matrix, ROC Curve, Feature Importance
 
 ---
 
 ## 📁 Project Structure
 
 ```text
+Heart-Disease-Prediction/
+│
 ├── heart_disease_project.ipynb
 ├── heart_disease_app.py
 ├── heart.csv
@@ -297,41 +322,39 @@ pip install numpy pandas matplotlib scikit-learn xgboost tensorflow gradio jobli
 
 ```text
 heart.csv
-    ↓
+   ↓
 Data Loading & EDA
-    ↓
+   ↓
 Train / Test Split
-    ↓
+   ↓
 Preprocessing
-    ↓
+   ↓
 ┌───────────────────────┐
-│                       │
-├── Logistic Regression │
-├── Random Forest       │
-├── XGBoost             │
-└── Deep Learning MLP   │
-        ↓
- Model Evaluation
-        ↓
- Hybrid Ensemble
-        ↓
- Final Prediction
-        ↓
-    Gradio UI
+│ Logistic Regression   │
+│ Random Forest         │
+│ XGBoost               │
+│ Deep Learning (MLP)   │
+└───────────────────────┘
+   ↓
+Model Evaluation
+   ↓
+Hybrid Ensemble
+   ↓
+Final Prediction
+   ↓
+Gradio Interface
 ```
 
 ---
 
 ## 📚 Notebook Structure
 
-الـ Notebook الأساسي منظم في المراحل التالية:
-
 1. Setup
 2. Load Data & EDA
 3. Train/Test Split & Preprocessing
 4. Logistic Regression
-5. Random Forest (Tuned)
-6. XGBoost (Tuned)
+5. Random Forest — Tuned
+6. XGBoost — Tuned
 7. Deep Learning — MLP
 8. Hybrid Ensemble & Model Comparison
 9. Gradio App
@@ -353,3 +376,7 @@ The predictions generated by this application should not be considered a medical
 GitHub: `https://github.com/USERNAME`
 
 LinkedIn: `https://www.linkedin.com/in/USERNAME`
+
+---
+
+⭐ If you find this project useful, feel free to give it a star!
