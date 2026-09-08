@@ -175,7 +175,7 @@ Users can:
 
 ### 🎛️ Interface
 
-![gradio-interface](screenshots/gradio-interface.png)
+![gradio-interface]([screenshots/gradio-interface.png](https://github.com/MohamedAymanHosny/Heart-Disease-Prediction/blob/main/Screenshots/gradio-interface.png))
 
 ### 🔮 Prediction Example
 
