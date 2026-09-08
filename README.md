@@ -175,33 +175,59 @@ Users can:
 
 ### 🎛️ Interface
 
-![gradio-interface](https://raw.githubusercontent.com/MohamedAymanHosny/Heart-Disease-Prediction/Screenshots/gradio-interface.png)
+![Gradio Interface](Screenshots/gradio-interface.png)
 
 ### 🔮 Prediction Example
 
-![Prediction Result](screenshots/prediction.png)
+![Prediction Result](Screenshots/prediction.png)
 
 ---
 
 ## 📊 Visual Results
 
-### Model Comparison
+### Model Comparison 1
 
-![Model Comparison](screenshots/model-comparison.png)
+![Model Comparison 1](Screenshots/model-comparison%20(1).png)
 
-### Confusion Matrix
+### Model Comparison 2
 
-![Confusion Matrix](screenshots/confusion-matrix.png)
+![Model Comparison 2](Screenshots/model-comparison%20(2).png)
 
-### ROC Curve
+### Model Comparison 3
 
-![ROC Curve](screenshots/roc-curve.png)
+![Model Comparison 3](Screenshots/model-comparison%20(3).png)
+
+### Model Comparison 4
+
+![Model Comparison 4](Screenshots/model-comparison%20(4).png)
+
+### Confusion Matrix - Deep Learning
+
+![Confusion Matrix Deep Learning](Screenshots/confusion-matrix-dee-learning.png)
+
+### Confusion Matrix - Hybrid Ensemble
+
+![Confusion Matrix Hybrid Ensemble](Screenshots/confusion-matrix-hybrid-ensemble.png)
+
+### ROC Curve - Hybrid Ensemble
+
+![ROC Curve Hybrid Ensemble](Screenshots/roc-curve-hybrid-ensemble.png)
 
 ### Feature Importance
 
-![Feature Importance](screenshots/feature-importance.png)
+![Feature Importance](Screenshots/feature-importance.png)
 
-> 💡 If your screenshot filenames are different, update the image paths above to match your `screenshots/` folder.
+### Learning Curve - Logistic Regression / Linear
+
+![Learning Curve LR](Screenshots/learning-curve-lr-liblinear.png)
+
+### Learning Curve - Random Forest
+
+![Learning Curve Random Forest](Screenshots/learning-curve-random-forest.png)
+
+### Learning Curve - XGBoost
+
+![Learning Curve XGBoost](Screenshots/learning-curve-xgboost.png)
 
 ---
 
