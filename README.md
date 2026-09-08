@@ -175,7 +175,7 @@ Users can:
 
 ### 🎛️ Interface
 
-![Gradio Interface](screenshots/gradio-interface.png)
+![gradio-interface](screenshots/gradio-interface.png)
 
 ### 🔮 Prediction Example
 
